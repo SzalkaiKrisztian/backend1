@@ -125,4 +125,29 @@ export class KonytarManager{
             Promise.reject();
         }
     }
+
+    public async KonyvModositasa(id:number,modositas:Partial<IKonyv>): Promise<boolean | undefined>{
+        try {
+            const kapcs = await mysql.createConnection(config);
+            const [row] = await kapcs.query<ResultSetHeader>("UPDATE konyv SET ? WHERE konyv.id=?;",[modositas, id]);
+            await kapcs.end();
+            if(row.affectedRows==0)
+                return false;
+            return true;
+        } catch (error) {
+            Promise.reject(error);
+        }
+    }
+
+    public async KonyvTorlese(id:number) : Promise<void | undefined>{
+        try {
+            const kapcs = await mysql.createConnection(config);
+            const [row] = await kapcs.query<ResultSetHeader>("DELETE FROM konyv WHERE konyv.id = ?;",[id]);
+            await kapcs.end();
+            if(row.affectedRows==0)
+                Promise.reject("0 rows");
+        } catch (error) {
+            Promise.reject(error);
+        }
+    }
 }
