@@ -1,0 +1,17 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+class Config{
+    constructor() {
+        return {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NEVE
+        }
+    }
+}
+
+const config:Config = new Config();
+
+export default config;
